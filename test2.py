@@ -7,6 +7,7 @@ from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 mp_holistic = mp.solutions.holistic # Holistic model
 mp_drawing = mp.solutions.drawing_utils # Drawing utilities
+from streamlit_webrtc import VideoTransformerBase, webrtc_streamer
 model = load_model('sign_language_prediction.h5')
 def mediapipe_detection(image, model):
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) # COLOR CONVERSION BGR 2 RGB
@@ -88,13 +89,12 @@ def display_video():
     
     # Set mediapipe model 
     with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
-        st.title("Video Capture with Streamlit WebRTC")
+        st.title("test")
         stop_button_pressed = st.button("Stop")
-        video_feed = st.video()
-        with st.echo():
-            video_feed
-        while not stop_button_pressed:
-            frame = video_feed.read()
+        ctx = webrtc_streamer(key="snapshot", video_transformer_factory=VideoTransformer)
+
+        if ctx.video_transformer:
+            frame = ctx.video_transformer.out_image
             results = mediapipe_detection(frame, model)
             keypoints = extract_keypoints(results)
 
