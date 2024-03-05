@@ -85,7 +85,7 @@ def display_video():
     sentence = []
     predictions = []
     threshold = 0.5
-    cap = st.camera_input()
+    cap = st.camera_input("take")
     # Set mediapipe model 
     with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
         st.title("Video Capture with OpenCV")
