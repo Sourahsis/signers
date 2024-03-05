@@ -85,17 +85,18 @@ def display_video():
     sentence = []
     predictions = []
     threshold = 0.5
-    cap = st.camera_input("take")
+    
     # Set mediapipe model 
     with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
-        st.title("Video Capture with OpenCV")
-        frame_placeholder = st.empty()
-
-        # Add a "Stop" button and store its state in a variable
+        st.title("Video Capture with Streamlit WebRTC")
         stop_button_pressed = st.button("Stop")
-        while cap is not None:
-            # Read feed
-            ret, frame = cap.read()
+        video_feed = st.video()
+        with st.echo():
+            video_feed
+        while not stop_button_pressed:
+            frame = video_feed.read()
+            results = mediapipe_detection(frame, model)
+            keypoints = extract_keypoints(results)
 
             # Make detections
             image, results = mediapipe_detection(frame, holistic)
@@ -138,10 +139,6 @@ def display_video():
             # Show to screen
             encoded_frame = cv2.imencode('.jpg', image)[1].tobytes()
             frame_placeholder.image(encoded_frame, channels="RGB")
-            if cv2.waitKey(10) & 0xFF == ord('q'):
-               break
-        cap.release()
-        cv2.destroyAllWindows()
 def main():
     page = st.sidebar.selectbox("Go to", ["Index Page", "Go and test"])
 
