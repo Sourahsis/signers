@@ -1,5 +1,4 @@
 opencv-python-headless==4.5.1.48
-streamlit_webrtc==0.20.0
 tensorflow
 mediapipe 
 numpy
