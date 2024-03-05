@@ -93,7 +93,7 @@ def display_video():
 
         # Add a "Stop" button and store its state in a variable
         stop_button_pressed = st.button("Stop")
-        while cap.isOpened():
+        while cap is not None:
             # Read feed
             ret, frame = cap.read()
 
