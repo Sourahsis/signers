@@ -91,7 +91,7 @@ def display_video():
     with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
         st.title("test")
         stop_button_pressed = st.button("Stop")
-        ctx = webrtc_streamer(key="snapshot", video_transformer_factory=VideoTransformer)
+        ctx = webrtc_streamer(key="snapshot")
 
         if ctx.video_transformer:
             frame = ctx.video_transformer.out_image
